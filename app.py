@@ -7,6 +7,13 @@ from flask_socketio import SocketIO, emit
 
 from db import db, init_db, User
 
+
+def safe_int(value):
+    try:
+        return int(value)
+    except (TypeError, ValueError):
+        return 0
+
 # ---------------- LOAD ENV ----------------
 load_dotenv()
 
@@ -14,19 +21,15 @@ load_dotenv()
 app = Flask(__name__)
 app.secret_key = os.getenv("FLASK_SECRET_KEY", "safe_dev_key")
 
-# ---------------- DATABASE ----------------
+# ---------------- DATABASE CONFIG ----------------
 app.config["SQLALCHEMY_DATABASE_URI"] = os.getenv(
     "DATABASE_URL",
     "sqlite:///neuro_pulse_v3.db"
 )
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 
-# ---------------- SOCKET IO (RENDER SAFE) ----------------
-socketio = SocketIO(
-    app,
-    cors_allowed_origins="*",
-    async_mode="threading"
-)
+# ---------------- SOCKET IO ----------------
+socketio = SocketIO(app, cors_allowed_origins="*", async_mode="threading")
 
 # ---------------- INIT DB ----------------
 init_db(app)
@@ -43,7 +46,7 @@ class PatientRecord(db.Model):
     duration = db.Column(db.Integer)
     age = db.Column(db.Integer)
     bp = db.Column(db.String(20))
-    spo2 = db.Column(db.Integer, nullable=True)
+    spo2 = db.Column(db.Integer)
 
     sugar = db.Column(db.Integer)
     pain = db.Column(db.Integer)
@@ -99,9 +102,7 @@ def login():
             session["role"] = user.role
 
             return redirect(
-                url_for("doctor_dashboard")
-                if user.role == "doctor"
-                else url_for("analyze")
+                url_for("doctor_dashboard") if user.role == "doctor" else url_for("analyze")
             )
 
         error = "Invalid username or password"
@@ -131,17 +132,18 @@ def ai_agent(data):
 
     if duration > 3:
         score += 10
-
     if age > 60:
         score += 15
-
-    spo2_val = data.get("spo2")
-    if spo2_val is not None and str(spo2_val).isdigit():
-        if int(spo2_val) < 90:
-            score += 30
-
     if pain > 7:
         score += 10
+
+    spo2 = data.get("spo2")
+    if spo2:
+        try:
+            if int(spo2) < 90:
+                score += 30
+        except:
+            pass
 
     if score >= 70:
         level = "CRITICAL"
@@ -157,7 +159,7 @@ def ai_agent(data):
         "score": score,
         "level": level,
         "action": action,
-        "explanation": f"Risk calculated. Score={score}"
+        "explanation": f"Risk score calculated = {score}"
     }
 
 
@@ -171,29 +173,22 @@ def analyze():
         data = request.form
         risk = ai_agent(data)
 
-        # SAFE INT CONVERSION (fixes Pylance + crashes)
-        def to_int(value):
-            try:
-                return int(value)
-            except:
-                return 0
+        record = PatientRecord()
 
-        record = PatientRecord(
-            user_id=session.get("user_id"),
-            symptoms=data.get("symptoms"),
-            severity=data.get("severity"),
-            duration=to_int(data.get("duration")),
-            age=to_int(data.get("age")),
-            bp=data.get("bp"),
-            spo2=to_int(data.get("spo2")) if data.get("spo2") else None,
-            sugar=to_int(data.get("sugar")),
-            pain=to_int(data.get("pain")),
-            city=data.get("city"),
-            risk_score=risk["score"],
-            risk_level=risk["level"],
-            action=risk["action"],
-            ai_explanation=risk["explanation"]
-        )
+        record.user_id = session.get("user_id")
+        record.symptoms = data.get("symptoms")
+        record.severity = data.get("severity")
+        record.duration = safe_int(data.get("duration"))
+        record.age = safe_int(data.get("age"))
+        record.spo2 = safe_int(data.get("spo2")) if data.get("spo2") else None
+        record.sugar = safe_int(data.get("sugar"))
+        record.pain = safe_int(data.get("pain"))
+        record.city = data.get("city")
+
+        record.risk_score = risk["score"]
+        record.risk_level = risk["level"]
+        record.action = risk["action"]
+        record.ai_explanation = risk["explanation"]
 
         db.session.add(record)
         db.session.commit()
@@ -232,13 +227,13 @@ def doctor_dashboard():
     return render_template("doctor_dashboard.html", records=records)
 
 
-# ---------------- SOCKET ----------------
+# ---------------- SOCKET EVENTS ----------------
 @socketio.on("connect")
-def connect():
+def handle_connect():
     emit("connected", {"msg": "Connected"})
 
 
-# ---------------- RUN ----------------
+# ---------------- RUN APP ----------------
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 5000))
     socketio.run(app, host="0.0.0.0", port=port)
