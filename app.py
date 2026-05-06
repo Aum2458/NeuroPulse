@@ -1,24 +1,37 @@
+import os
+from datetime import datetime
+from dotenv import load_dotenv
+
 from flask import Flask, render_template, request, redirect, session, url_for
 from flask_socketio import SocketIO, emit
-from dotenv import load_dotenv
-from datetime import datetime
-import os
 
-# ✅ IMPORT DB
 from db import db, init_db, User
 
-# ---------------- SETUP ----------------
+# ---------------- LOAD ENV ----------------
 load_dotenv()
+
+# ---------------- APP SETUP ----------------
 app = Flask(__name__)
 app.secret_key = os.getenv("FLASK_SECRET_KEY", "safe_dev_key")
 
-# ✅ NEW DATABASE NAME
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///neuro_pulse_v3.db'
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+# ---------------- DATABASE ----------------
+app.config["SQLALCHEMY_DATABASE_URI"] = os.getenv(
+    "DATABASE_URL",
+    "sqlite:///neuro_pulse_v3.db"
+)
+app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 
-socketio = SocketIO(app)
+# ---------------- SOCKET IO (RENDER SAFE) ----------------
+socketio = SocketIO(
+    app,
+    cors_allowed_origins="*",
+    async_mode="threading"
+)
 
-# ---------------- MODELS ----------------
+# ---------------- INIT DB ----------------
+init_db(app)
+
+# ---------------- MODEL ----------------
 class PatientRecord(db.Model):
     __tablename__ = "patient_records"
 
@@ -30,8 +43,7 @@ class PatientRecord(db.Model):
     duration = db.Column(db.Integer)
     age = db.Column(db.Integer)
     bp = db.Column(db.String(20))
-
-    spo2 = db.Column(db.Integer, nullable=True)  # optional
+    spo2 = db.Column(db.Integer, nullable=True)
 
     sugar = db.Column(db.Integer)
     pain = db.Column(db.Integer)
@@ -45,24 +57,19 @@ class PatientRecord(db.Model):
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
 
 
-# ✅ INIT DB AFTER MODELS (VERY IMPORTANT)
-init_db(app)
-
 # ---------------- ROUTES ----------------
-@app.route('/')
+@app.route("/")
 def home():
     return render_template("home.html")
 
 
-# ---------------- REGISTER ----------------
-@app.route('/register', methods=["GET", "POST"])
+@app.route("/register", methods=["GET", "POST"])
 def register():
     if request.method == "POST":
         username = request.form.get("username")
         password = request.form.get("password")
 
-        existing = User.query.filter_by(username=username).first()
-        if existing:
+        if User.query.filter_by(username=username).first():
             return render_template("register.html", error="User already exists")
 
         user = User()
@@ -77,8 +84,7 @@ def register():
     return render_template("register.html")
 
 
-# ---------------- LOGIN ----------------
-@app.route('/login', methods=["GET", "POST"])
+@app.route("/login", methods=["GET", "POST"])
 def login():
     error = None
 
@@ -92,112 +98,49 @@ def login():
             session["user_id"] = user.id
             session["role"] = user.role
 
-            if user.role == "doctor":
-                return redirect(url_for("doctor_dashboard"))
-
-            return redirect(url_for("analyze"))
+            return redirect(
+                url_for("doctor_dashboard")
+                if user.role == "doctor"
+                else url_for("analyze")
+            )
 
         error = "Invalid username or password"
 
     return render_template("login.html", error=error)
 
 
-# ---------------- LOGOUT ----------------
-@app.route('/logout')
+@app.route("/logout")
 def logout():
     session.clear()
     return redirect(url_for("login"))
 
 
-# ---------------- PATIENT ----------------
-@app.route('/analyze', methods=["GET", "POST"])
-def analyze():
-    if "user_id" not in session:
-        return redirect(url_for("login"))
-
-    if request.method == "POST":
-        data = request.form
-
-        risk = ai_agent(data)
-
-        record = PatientRecord()
-        record.user_id = session["user_id"]
-        record.symptoms = data.get("symptoms")
-        record.severity = data.get("severity")
-        record.duration = int(data.get("duration", 0))
-        record.age = int(data.get("age", 0))
-        record.bp = data.get("bp")
-
-        # ✅ SAFE SPO2
-        record.spo2 = int(data.get("spo2", 0)) if data.get("spo2") else None
-
-        record.sugar = int(data.get("sugar", 0))
-        record.pain = int(data.get("pain", 0))
-        record.city = data.get("city")
-
-        record.risk_score = risk["score"]
-        record.risk_level = risk["level"]
-        record.action = risk["action"]
-        record.ai_explanation = risk["explanation"]
-
-        db.session.add(record)
-        db.session.commit()
-
-        socketio.emit("new_case", {
-            "risk": risk["level"],
-            "city": data.get("city")
-        })
-
-        return render_template("result.html", result=record)
-
-    return render_template("analyze.html")
-
-
-# ---------------- HISTORY ----------------
-@app.route('/history')
-def history():
-    if "user_id" not in session:
-        return redirect(url_for("login"))
-
-    records = PatientRecord.query.filter_by(
-        user_id=session["user_id"]
-    ).all()
-
-    return render_template("timeline.html", records=records)
-
-
-# ---------------- DOCTOR ----------------
-@app.route('/doctor')
-def doctor_dashboard():
-    if session.get("role") != "doctor":
-        return redirect(url_for("login"))
-
-    records = PatientRecord.query.order_by(
-        PatientRecord.created_at.desc()
-    ).all()
-
-    return render_template("doctor_dashboard.html", records=records)
-
-
-# ---------------- AI LOGIC ----------------
+# ---------------- AI ENGINE ----------------
 def ai_agent(data):
     score = 0
 
-    if data.get("severity") == "high":
+    severity = data.get("severity")
+    if severity == "high":
         score += 40
-    elif data.get("severity") == "medium":
+    elif severity == "medium":
         score += 20
 
-    if int(data.get("duration", 0)) > 3:
+    duration = int(data.get("duration") or 0)
+    age = int(data.get("age") or 0)
+    pain = int(data.get("pain") or 0)
+
+    if duration > 3:
         score += 10
 
-    if int(data.get("age", 0)) > 60:
+    if age > 60:
         score += 15
 
-    if data.get("spo2") and int(data.get("spo2")) < 90:
-        score += 30
+    spo2_val = data.get("spo2")
+    if spo2_val is not None and str(spo2_val).isdigit():
+        if int(spo2_val) < 90:
+            score += 30
 
-    if int(data.get("pain", 0)) > 7:
+    if pain > 7:
         score += 10
 
     if score >= 70:
@@ -218,6 +161,77 @@ def ai_agent(data):
     }
 
 
+# ---------------- ANALYZE ----------------
+@app.route("/analyze", methods=["GET", "POST"])
+def analyze():
+    if "user_id" not in session:
+        return redirect(url_for("login"))
+
+    if request.method == "POST":
+        data = request.form
+        risk = ai_agent(data)
+
+        # SAFE INT CONVERSION (fixes Pylance + crashes)
+        def to_int(value):
+            try:
+                return int(value)
+            except:
+                return 0
+
+        record = PatientRecord(
+            user_id=session.get("user_id"),
+            symptoms=data.get("symptoms"),
+            severity=data.get("severity"),
+            duration=to_int(data.get("duration")),
+            age=to_int(data.get("age")),
+            bp=data.get("bp"),
+            spo2=to_int(data.get("spo2")) if data.get("spo2") else None,
+            sugar=to_int(data.get("sugar")),
+            pain=to_int(data.get("pain")),
+            city=data.get("city"),
+            risk_score=risk["score"],
+            risk_level=risk["level"],
+            action=risk["action"],
+            ai_explanation=risk["explanation"]
+        )
+
+        db.session.add(record)
+        db.session.commit()
+
+        socketio.emit("new_case", {
+            "risk": risk["level"],
+            "city": data.get("city")
+        })
+
+        return render_template("result.html", result=record)
+
+    return render_template("analyze.html")
+
+
+@app.route("/history")
+def history():
+    if "user_id" not in session:
+        return redirect(url_for("login"))
+
+    records = PatientRecord.query.filter_by(
+        user_id=session["user_id"]
+    ).all()
+
+    return render_template("timeline.html", records=records)
+
+
+@app.route("/doctor")
+def doctor_dashboard():
+    if session.get("role") != "doctor":
+        return redirect(url_for("login"))
+
+    records = PatientRecord.query.order_by(
+        PatientRecord.created_at.desc()
+    ).all()
+
+    return render_template("doctor_dashboard.html", records=records)
+
+
 # ---------------- SOCKET ----------------
 @socketio.on("connect")
 def connect():
@@ -226,4 +240,5 @@ def connect():
 
 # ---------------- RUN ----------------
 if __name__ == "__main__":
-    socketio.run(app, debug=True)
+    port = int(os.environ.get("PORT", 5000))
+    socketio.run(app, host="0.0.0.0", port=port)
