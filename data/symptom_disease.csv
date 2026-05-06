@@ -1,0 +1,29 @@
+symptoms,prognosis,severity,emergency,doctor_type,notes
+"fever, chills, headache, sweating",Malaria,High,Yes,General Physician,Parasitic infection spread by mosquitoes
+"high fever, joint pain, rash, fatigue",Dengue,High,Yes,General Physician,Viral infection, platelet monitoring required
+"chest pain, shortness of breath, sweating, nausea",Heart Attack,Critical,Yes,Cardiologist,Immediate medical emergency
+"sneezing, cough, runny nose, sore throat",Common Cold,Low,No,General Physician,Self-limiting viral infection
+"nausea, headache, light sensitivity, vomiting",Migraine,Medium,No,Neurologist,Neurological condition
+"fever, cough, breathing difficulty, chest pain",Pneumonia,High,Yes,Pulmonologist,Lung infection
+"fatigue, weight loss, frequent urination, thirst",Diabetes,Medium,No,Endocrinologist,Chronic metabolic disorder
+"abdominal pain, diarrhea, dehydration, vomiting",Food Poisoning,Medium,No,General Physician,Usually caused by contaminated food
+"anxiety, rapid heartbeat, sweating, fear",Panic Attack,Medium,No,Psychiatrist,Mental health related
+"persistent cough, night sweats, weight loss",Tuberculosis,High,Yes,Pulmonologist,Long-term bacterial infection
+"skin rash, itching, redness",Allergy,Low,No,Dermatologist,Immune system response
+"fever, sore throat, swollen lymph nodes",Viral Infection,Medium,No,General Physician,Common viral illness
+"joint pain, stiffness, swelling",Arthritis,Medium,No,Orthopedic,Chronic joint inflammation
+"blurred vision, headache, nausea",Glaucoma,High,Yes,Ophthalmologist,Eye pressure related
+"abdominal pain, bloating, constipation",Irritable Bowel Syndrome,Low,No,Gastroenterologist,Functional digestive disorder
+"shortness of breath, wheezing, chest tightness",Asthma,Medium,Yes,Pulmonologist,Chronic respiratory disease
+"high fever, confusion, stiff neck",Meningitis,Critical,Yes,Neurologist,Life-threatening infection
+"fever, cough, loss of taste, fatigue",COVID-19,Medium,Yes,General Physician,Respiratory viral illness
+"burning urination, frequent urination, pelvic pain",Urinary Tract Infection,Medium,No,Urologist,Bacterial infection
+"tremor, slow movement, muscle stiffness",Parkinsons Disease,High,No,Neurologist,Neurodegenerative disorder
+"persistent sadness, low energy, sleep issues",Depression,Medium,No,Psychiatrist,Mental health disorder
+"memory loss, confusion, difficulty speaking",Stroke,Critical,Yes,Neurologist,Emergency neurological condition
+"yellow skin, dark urine, fatigue",Jaundice,High,Yes,Gastroenterologist,Liver-related condition
+"severe headache, vision issues, nausea",Brain Tumor,Critical,Yes,Neurologist,Rare but serious condition
+"unexplained weight loss, fatigue, pain",Cancer,High,Yes,Oncologist,Requires specialist diagnosis
+"muscle pain, weakness, fever",Viral Myositis,Medium,No,General Physician,Rare viral muscle condition
+"fatigue, dizziness, pale skin",Anemia,Medium,No,Hematologist,Blood-related disorder
+"itching, white patches, redness",Fungal Infection,Low,No,Dermatologist,Skin-related infection

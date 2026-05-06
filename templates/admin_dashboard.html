@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Admin Dashboard | NeuroPulse-MDx+</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+
+<body class="bg-gray-100 dark:bg-gray-900 min-h-screen flex transition">
+
+<!-- Sidebar -->
+<aside class="w-64 bg-white dark:bg-gray-800 shadow-lg p-6">
+  <h1 class="text-xl font-bold mb-6 text-indigo-600">🧠 NeuroPulse-MDx+ | Admin</h1>
+  <ul class="space-y-4 text-gray-700 dark:text-gray-200 font-medium">
+    <li class="hover:text-indigo-600 cursor-pointer">📊 Dashboard</li>
+    <li class="hover:text-indigo-600 cursor-pointer">👤 Users</li>
+    <li class="hover:text-indigo-600 cursor-pointer">🩺 Doctors</li>
+    <li class="hover:text-indigo-600 cursor-pointer">📈 Health Data</li>
+    <li class="hover:text-indigo-600 cursor-pointer">🚨 Alerts</li>
+    <li class="hover:text-indigo-600 cursor-pointer">📄 Reports</li>
+    <li class="hover:text-indigo-600 cursor-pointer">⚙️ Settings</li>
+  </ul>
+</aside>
+
+<!-- Main Content -->
+<main class="flex-1 p-6">
+
+<!-- Header -->
+<div class="flex justify-between items-center mb-6">
+  <h2 class="text-2xl font-semibold">📊 Admin Dashboard</h2>
+  <button onclick="toggleDarkMode()" class="border px-3 py-1 rounded text-sm">🌓</button>
+</div>
+
+<!-- Stats -->
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+  <div class="bg-white dark:bg-gray-800 p-5 rounded-xl shadow">
+    <h3 class="text-sm text-gray-500">Total Users</h3>
+    <p class="text-3xl font-bold text-indigo-600">{{ stats.total_users }}</p>
+  </div>
+  <div class="bg-white dark:bg-gray-800 p-5 rounded-xl shadow">
+    <h3 class="text-sm text-gray-500">Doctors</h3>
+    <p class="text-3xl font-bold text-green-600">{{ stats.doctors }}</p>
+  </div>
+  <div class="bg-white dark:bg-gray-800 p-5 rounded-xl shadow">
+    <h3 class="text-sm text-gray-500">Active Alerts</h3>
+    <p class="text-3xl font-bold text-red-600">{{ stats.alerts }}</p>
+  </div>
+  <div class="bg-white dark:bg-gray-800 p-5 rounded-xl shadow">
+    <h3 class="text-sm text-gray-500">Reports Generated</h3>
+    <p class="text-3xl font-bold text-purple-600">{{ stats.reports }}</p>
+  </div>
+</div>
+
+<!-- Users Table -->
+<div class="bg-white dark:bg-gray-800 p-5 rounded-xl shadow mb-8 overflow-x-auto">
+  <h3 class="text-lg font-semibold mb-4">👥 Recent Users</h3>
+  <table class="w-full text-sm text-left">
+    <thead class="border-b border-gray-300 dark:border-gray-700 text-gray-500">
+      <tr>
+        <th class="py-2">Username</th>
+        <th>Email</th>
+        <th>Role</th>
+        <th>Status</th>
+      </tr>
+    </thead>
+    <tbody class="text-gray-700 dark:text-gray-300">
+      {% for u in users %}
+      <tr class="border-b border-gray-200 dark:border-gray-700">
+        <td class="py-2">{{ u.username }}</td>
+        <td>{{ u.email }}</td>
+        <td>{{ u.role }}</td>
+        <td class="font-semibold 
+          {% if u.status == 'Active' %}text-green-500{% else %}text-yellow-500{% endif %}">
+          {{ u.status }}
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+
+<!-- Chart -->
+<div class="bg-white dark:bg-gray-800 p-5 rounded-xl shadow mb-8">
+  <h3 class="text-lg font-semibold mb-4">📈 Weekly Diagnosis Trends</h3>
+  <canvas id="weeklyChart" height="120"></canvas>
+</div>
+
+<!-- OTP -->
+<div class="bg-white dark:bg-gray-800 p-5 rounded-xl shadow mb-8">
+  <h3 class="text-lg font-semibold mb-4">🔒 Family Access via OTP</h3>
+  <form method="POST" action="/generate_otp" class="flex gap-2">
+    <input type="email" name="email" required placeholder="Enter family email"
+           class="border p-2 w-full rounded dark:bg-gray-700 dark:text-white">
+    <button class="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded">
+      Send OTP
+    </button>
+  </form>
+</div>
+
+<!-- Report -->
+<div class="bg-white dark:bg-gray-800 p-5 rounded-xl shadow text-center">
+  <h3 class="text-lg font-semibold mb-4">📄 Generate Weekly Report</h3>
+  <a href="/generate_weekly_report"
+     class="bg-green-600 hover:bg-green-700 text-white px-6 py-2 rounded">
+     📥 Download PDF
+  </a>
+</div>
+
+<footer class="text-center mt-8 text-gray-500 dark:text-gray-400">
+  🌐 Secure Admin Panel | {{ now }}
+</footer>
+
+</main>
+
+<script>
+/* Dark Mode */
+if(localStorage.getItem("darkMode") === "true"){
+  document.body.classList.add("dark");
+}
+function toggleDarkMode(){
+  document.body.classList.toggle("dark");
+  localStorage.setItem("darkMode", document.body.classList.contains("dark"));
+}
+
+/* Chart */
+const ctx = document.getElementById("weeklyChart").getContext("2d");
+const chartData = {{ chart_data | tojson | safe }};
+new Chart(ctx, {
+  type: "line",
+  data: {
+    labels: chartData.map(d => d.date),
+    datasets: [{
+      data: chartData.map(d => d.count),
+      borderColor: "#4f46e5",
+      backgroundColor: "rgba(79,70,229,0.2)",
+      tension: 0.4,
+      fill: true
+    }]
+  },
+  options: {
+    responsive: true,
+    plugins: { legend: { display: false } },
+    scales: { y: { beginAtZero: true } }
+  }
+});
+</script>
+
+</body>
+</html>

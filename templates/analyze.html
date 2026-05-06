@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Analyze | NeuroPulse-MDx+</title>
+<script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="bg-gray-100 min-h-screen flex flex-col items-center pt-10">
+
+<h1 class="text-3xl font-bold text-indigo-600 mb-6">
+🧠 NeuroPulse-MDx+ | Symptom Analysis
+</h1>
+
+{% if error %}
+<p class="text-red-500 mb-4">{{ error }}</p>
+{% endif %}
+
+<form method="POST" action="/analyze"
+ class="bg-white p-8 rounded-xl shadow-md w-96 space-y-4">
+
+<input type="text" name="symptoms"
+ placeholder="Symptoms (eg: headache, fever)"
+ required class="w-full p-2 border rounded">
+
+<select name="severity" required class="w-full p-2 border rounded">
+<option value="">Select severity</option>
+<option value="low">Low</option>
+<option value="medium">Medium</option>
+<option value="high">High</option>
+</select>
+
+<input type="number" name="duration"
+ placeholder="Duration (days)" required
+ class="w-full p-2 border rounded">
+
+<input type="number" name="age"
+ placeholder="Age" required
+ class="w-full p-2 border rounded">
+
+<select name="existing_condition" class="w-full p-2 border rounded">
+<option value="no">No existing condition</option>
+<option value="yes">Yes, existing condition</option>
+</select>
+
+<input type="text" name="city"
+ placeholder="City (e.g. Ahmedabad)" required
+ class="w-full p-2 border rounded">
+
+<button type="submit"
+ class="w-full bg-indigo-600 text-white py-2 rounded hover:bg-indigo-700">
+Analyze
+</button>
+</form>
+
+{% if result %}
+<div class="bg-white mt-6 p-6 rounded shadow w-96">
+<h2 class="font-bold text-lg mb-2">✅ Diagnosis Result</h2>
+
+<p><b>🦠 Symptoms:</b> {{ result.symptoms }}</p>
+<p><b>🧪 Risk Level:</b> {{ result.risk }} (Score: {{ result.score }})</p>
+<p><b>📡 Suggested Action:</b> {{ result.action }}</p>
+<p class="mt-2"><b>💡 AI Explanation:</b> {{ result.explanation }}</p>
+</div>
+{% endif %}
+
+</body>
+</html>

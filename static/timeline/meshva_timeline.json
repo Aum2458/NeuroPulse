@@ -1,0 +1,42 @@
+[
+  {
+    "timestamp": "2025-06-29 15:27:40",
+    "symptoms": "teeth pain in left side",
+    "result": {
+      "symptoms": "teeth pain in left side",
+      "diagnosis": "Arthritis",
+      "confidence": 15.58,
+      "ai_summary": " Arthritis is a general term used to describe inflammation or swelling in the joints, leading to pain, stiffness, and often decreased mobility. There are over 100 different types of arthritis, the most common being osteoarthritis (a degenerative joint disease) and rheumatoid arthritis (an autoimmune disorder).\n\nHere are three health tips for managing arthritis:\n\n1. Regular Exercise: Regular, gentle exercises like swimming, cycling, yoga, and walking can help keep the joints flexible, improve range of motion, and reduce pain. Consult with a healthcare provider or physiotherapist to find a suitable exercise routine.\n\n2. Maintain a Healthy Weight: Excess weight puts extra stress on weight-bearing joints like the hips and knees. Maintaining a healthy weight can reduce the risk and symptoms of arthritis.\n\n3. Proper Posture and Balance: Good posture can help reduce strain on the joints and improve movement. When sitting, try to maintain an upright posture with your feet flat on the floor. When standing, distribute your weight evenly on both feet. During physical activities, focus on appropriate form to prevent improper movement that could worsen arthritis symptoms."
+    }
+  },
+  {
+    "timestamp": "2025-06-29 15:25:37",
+    "symptoms": "teeth pain in left side",
+    "result": {
+      "symptoms": "teeth pain in left side",
+      "diagnosis": "Arthritis",
+      "confidence": 15.58,
+      "ai_summary": " Arthritis is a general term for joint pain, swelling, and inflammation. There are over 100 types of arthritis, but the most common ones are osteoarthritis (degenerative joint disease) and rheumatoid arthritis (an autoimmune disease). Arthritis can affect people of all ages, but it is more prevalent in older adults and is a leading cause of disability.\n\nSymptoms of arthritis include joint pain, stiffness, and swelling, as well as reduced range of motion and joint deformity in severe cases. Some of the more common symptoms can also include fatigue, fever, and even weight loss due to a decrease in activity levels.\n\nHere are 3 health tips to help manage arthritis:\n\n1. Regular exercise: Low-impact exercises like walking, swimming, or cycling can help improve joint mobility and strengthen the muscles around the joints. It's essential to find a form of exercise that is both comfortable for you and safe for your joints.\n\n2. Maintain a healthy weight: Excess weight can put extra pressure on weight-bearing joints such as the knees and hips, which can worsen arthritis symptoms. Aim to maintain a healthy weight through a balanced diet and regular exercise.\n\n3. Use hot and cold therapy: Both heat and cold therapy can provide temporary relief for arthritis pain. Hot packs, such as a warm bath or heating pad, can help relax muscles and decrease joint stiffness due to arthritis. Cold packs, such as ice packs, can help reduce inflammation and numb the area around the joint, providing temporary relief from pain. It is essential to use the appropriate temperature and duration of therapy based on your individual needs and symptoms."
+    }
+  },
+  {
+    "timestamp": "2025-06-29 15:22:39",
+    "symptoms": "teeth pain",
+    "result": {
+      "symptoms": "teeth pain",
+      "diagnosis": "Arthritis",
+      "confidence": 15.58,
+      "ai_summary": " Arthritis is a general term for conditions that inflame joints, causing pain, swelling, and stiffness. There are over 100 types of arthritis, with the most common being osteoarthritis and rheumatoid arthritis.\n\n1. Maintain a healthy weight: Excess weight puts additional pressure on weight-bearing joints like the knees and hips, which can exacerbate arthritis symptoms. A healthy diet and regular exercise can help manage weight.\n\n2. Stay active: Regular physical activity, especially low-impact exercises like swimming, cycling, or walking, can help improve joint mobility and strengthen muscles around the joints, providing support and reducing pain.\n\n3. Use heat and cold therapy: Applying heat or cold to the affected joints can help relieve pain and reduce inflammation. Heat can be applied through warm baths, heating pads, or hot water bottles, while cold can be applied with ice packs or cold wraps. Always avoid applying heat or cold directly to the skin."
+    }
+  },
+  {
+    "timestamp": "2025-06-29 15:21:04",
+    "symptoms": "leg pain",
+    "result": {
+      "symptoms": "leg pain",
+      "diagnosis": "Arthritis",
+      "confidence": 15.58,
+      "ai_summary": " Arthritis is a broad term covering more than 100 rheumatic diseases and conditions that affect joints, the tissues that surround the joints, and other connective tissue. Arthritis can cause pain, swelling, stiffness, and restricted movement in the affected areas. The most common types are osteoarthritis (OA) and rheumatoid arthritis (RA). OA is primarily from wear and tear on the joints, while RA is an autoimmune disease where the body's immune system mistakenly attacks the joints.\n\nHere are three health tips to manage arthritis:\n\n1. Regular Exercise: Light physical activities like walking, swimming, cycling, or water aerobics can help reduce joint pain, increase strength, and improve range of motion, flexibility, and balance. Consult a doctor or physical therapist to create a safe and effective exercise routine suitable for your condition.\n\n2. Maintain a Healthy Weight: Excess weight can put added stress on weight-bearing joints like the knees and hips, exacerbating arthritis symptoms. Weight loss can help alleviate some pressure on the joints and improve pain levels.\n\n3. Good nutrition and supplements: A balanced diet rich in fruits, vegetables, lean proteins, and whole grains can help reduce inflammation and aid in maintaining a healthy weight. Some supplements like omega-3 fatty acids, glucosamine, and chondroitin have shown to potentially help manage arthritis symptoms; however, it's essential to consult a healthcare professional before starting any supplement regimen. Additionally, managing arthritis through a combination of lifestyle changes, medication, and therapy can help improve overall quality of life."
+    }
+  }
+]

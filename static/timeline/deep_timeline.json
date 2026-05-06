@@ -1,0 +1,42 @@
+[
+  {
+    "timestamp": "2025-11-18 13:36:39",
+    "symptoms": "right hand heavy pain",
+    "result": {
+      "symptoms": "right hand heavy pain",
+      "diagnosis": "Arthritis",
+      "confidence": 15.58,
+      "ai_summary": " Arthritis is a general term for joint pain or joint disease, which can affect individuals of all ages, including children. There are over 100 types of arthritis and related conditions, the most common being osteoarthritis and rheumatoid arthritis. Arthritis can cause pain, swelling, stiffness, and reduced range of motion in the affected joints.\n\n1. Regular Exercise: Low-impact exercises like swimming, cycling, or walking can help maintain joint mobility and strengthen the muscles around the joints. Consult with a healthcare provider to determine the best exercise routine for managing arthritis.\n\n2. Maintain a Healthy Weight: Excess weight puts additional stress on weight-bearing joints like the knees and hips, which can exacerbate arthritis symptoms. Achieving and maintaining a healthy weight can help alleviate some of the pressure on these joints.\n\n3. Proper Joint Protection: Protecting joints from further damage is crucial in managing arthritis. This can be achieved by using assistive devices like canes or braces, adjusting your workstation to minimize repetitive movements, and practicing good posture to reduce strain on the joints.\n\nIt's also essential to consult with a healthcare professional for personalized advice and treatment options, as arthritis management strategies can vary greatly depending on the type and severity of the condition."
+    }
+  },
+  {
+    "timestamp": "2025-11-18 13:30:40",
+    "symptoms": "headache",
+    "result": {
+      "symptoms": "headache",
+      "diagnosis": "Migraine",
+      "confidence": 18.36,
+      "ai_summary": " Migraine is a neurological disorder characterized by recurrent headaches, often accompanied by sensory warning symptoms, nausea, vomiting, and sensitivity to light, sound, and smell. Migraines can cause severe pain and can significantly impact a person's quality of life.\n\nHere are three health tips for managing migraines:\n\n1. Keep a migraine diary: Tracking your migraine triggers, such as stress, food, sleep patterns, and hormonal changes, can help you identify patterns and potential triggers. This information can help you take preventive measures to reduce the frequency and severity of migraines.\n2. Practice stress management techniques: Stress is a common migraine trigger. Techniques such as deep breathing exercises, meditation, yoga, and mindfulness can help manage stress levels and reduce the frequency of migraines.\n3. Maintain a regular sleep schedule: Irregular sleep patterns can trigger migraines. Aim for 7-9 hours of sleep per night and establish a consistent sleep schedule to help reduce the risk of migraines. Additionally, avoid caffeine and alcohol before bedtime as they can disrupt sleep and potentially trigger migraines."
+    }
+  },
+  {
+    "timestamp": "2025-11-18 13:28:18",
+    "symptoms": "headache",
+    "result": {
+      "symptoms": "headache",
+      "diagnosis": "Migraine",
+      "confidence": 18.36,
+      "ai_summary": " Migraine is a neurological disorder characterized by recurrent headaches, typically one-sided, pulsating, and often accompanied by nausea, vomiting, and sensitivity to light, sound, or smell. Migraines can last from a few hours to several days and can significantly impact a person's quality of life.\n\nHere are three health tips to help manage migraines:\n\n1. Keep a headache diary: Tracking your migraines can help identify triggers, such as certain foods, stress, or changes in sleep patterns. This information can help you avoid triggers and manage migraines more effectively.\n\n2. Maintain a regular sleep schedule: Irregular sleep patterns can trigger migraines. Aim for 7-9 hours of sleep per night and establish a consistent sleep schedule to help reduce the frequency and severity of migraines.\n\n3. Practice stress management techniques: Stress is a common migraine trigger. Techniques such as meditation, deep breathing exercises, yoga, and mindfulness can help manage stress levels and reduce the likelihood of migraines. Additionally, regular exercise, a balanced diet, and staying hydrated can also help in managing migraines. It's always a good idea to consult with a healthcare provider for personalized advice and treatment options."
+    }
+  },
+  {
+    "timestamp": "2025-11-18 10:38:02",
+    "symptoms": "headache",
+    "result": {
+      "symptoms": "headache",
+      "diagnosis": "Migraine",
+      "confidence": 18.36,
+      "ai_summary": " <s> A migraine is a type of headache that can cause severe throbbing pain or a pulsing sensation, usually on one side of the head. It's often accompanied by nausea, vomiting, and extreme sensitivity to light and sound. Migraines can last for hours to days, and the pain can be so severe that it interferes with daily activities.\n\n### 3 Health Tips to Manage Migraines:\n1. **Stay Hydrated**: Dehydration is a common trigger for migraines. Drinking plenty of water throughout the day can help prevent or reduce the frequency of migraines.\n2. **Maintain a Regular Sleep Schedule**: Irregular sleep patterns can trigger migraines. Aim for 7-9 hours of quality sleep per night and try to go to bed and wake up at the same time every day.\n3. **Identify and Avoid Triggers**: Common migraine triggers include certain foods (like aged cheeses, processed meats, and chocolate), stress, bright lights, and strong smells. Keeping a migraine diary can help you identify your personal triggers and avoid them.\n\nIf migraines are frequent or severe, it's important to consult a healthcare professional for personalized advice and treatment options."
+    }
+  }
+]

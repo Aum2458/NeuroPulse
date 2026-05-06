@@ -1,0 +1,12 @@
+[
+  {
+    "timestamp": "2025-06-29 14:53:32",
+    "symptoms": "headache",
+    "result": {
+      "symptoms": "headache",
+      "diagnosis": "Migraine",
+      "confidence": 18.36,
+      "ai_summary": " A migraine is a neurological disorder characterized by recurrent headaches, typically one-sided, pulsating, and moderate to severe in intensity. These headaches are often accompanied by symptoms such as nausea, vomiting, and sensitivity to light, sound, or smell. Migraines can last from a few hours to several days, and the exact cause is not fully understood.\n\nHere are three health tips to manage migraines:\n\n1. Keep a headache diary: Tracking your migraines can help identify potential triggers, patterns, and effectiveness of treatments, which can help you prevent future attacks. Noting what you ate, what you were doing, and your stress level during an attack can help you identify patterns and potential triggers.\n\n2. Lifestyle changes: Regular exercise, adequate sleep, and stress management through yoga, meditation, or relaxation techniques can help reduce the frequency and severity of migraines. Limiting caffeine, alcohol, and processed foods is also recommended, as these can be migraine triggers for some people.\n\n3. Seek professional help: If you're experiencing frequent migraines, it's crucial to consult a healthcare professional. They can help identify the cause, recommend appropriate medications, and design a treatment plan tailored to your needs. A team of doctors, including neurologists, primary care providers, and specialists, may be involved in managing your care. If needed, they can also refer you to migraine clinics specialized in advanced treatment options such as nerve blocks, Botox injections, or other innovative therapies."
+    }
+  }
+]

@@ -1,0 +1,206 @@
+/* ===============================
+   Reset & Base Styles
+================================ */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: "Segoe UI", Arial, sans-serif;
+  background-color: #f4f8fb;
+  color: #333;
+  line-height: 1.6;
+  padding: 20px;
+}
+
+/* ===============================
+   Header & Navigation
+================================ */
+header {
+  background-color: #004aad;
+  color: #ffffff;
+  padding: 15px 30px;
+  margin-bottom: 25px;
+  border-radius: 8px;
+}
+
+header h1 {
+  margin-bottom: 8px;
+  font-size: 1.8rem;
+}
+
+nav a {
+  color: #ffffff;
+  margin-right: 15px;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+nav a:hover {
+  text-decoration: underline;
+}
+
+/* ===============================
+   Forms
+================================ */
+form {
+  background: #ffffff;
+  padding: 25px;
+  border-radius: 10px;
+  max-width: 600px;
+  margin: auto;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.06);
+}
+
+label {
+  font-weight: 600;
+}
+
+input[type="text"],
+input[type="email"],
+input[type="password"],
+select,
+textarea {
+  width: 100%;
+  padding: 10px 12px;
+  margin-top: 8px;
+  margin-bottom: 16px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 0.95rem;
+}
+
+textarea {
+  resize: vertical;
+  min-height: 120px;
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+  outline: none;
+  border-color: #0077ff;
+  box-shadow: 0 0 0 2px rgba(0, 119, 255, 0.15);
+}
+
+/* ===============================
+   Buttons
+================================ */
+button,
+.btn-primary {
+  background-color: #0077ff;
+  color: #ffffff;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.95rem;
+  font-weight: 600;
+  transition: background-color 0.3s ease, transform 0.1s ease;
+}
+
+button:hover,
+.btn-primary:hover {
+  background-color: #005dcc;
+}
+
+button:active {
+  transform: scale(0.98);
+}
+
+button:disabled {
+  background-color: #9bbcff;
+  cursor: not-allowed;
+}
+
+/* ===============================
+   Sections / Cards
+================================ */
+section {
+  background: #ffffff;
+  padding: 22px;
+  margin: 20px auto;
+  border-radius: 10px;
+  max-width: 900px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+}
+
+section h2 {
+  margin-bottom: 12px;
+  color: #004aad;
+}
+
+/* ===============================
+   Charts
+================================ */
+canvas {
+  max-width: 100%;
+  height: auto;
+  margin-top: 20px;
+}
+
+/* ===============================
+   Alerts & Messages
+================================ */
+.error {
+  color: #b30000;
+  background: #ffe6e6;
+  padding: 12px;
+  border-radius: 6px;
+  margin: 15px 0;
+  font-weight: 600;
+}
+
+.success {
+  color: #0f5132;
+  background: #d1e7dd;
+  padding: 12px;
+  border-radius: 6px;
+  margin: 15px 0;
+  font-weight: 600;
+}
+
+.info {
+  color: #055160;
+  background: #cff4fc;
+  padding: 12px;
+  border-radius: 6px;
+  margin: 15px 0;
+  font-weight: 600;
+}
+
+/* ===============================
+   Footer
+================================ */
+footer {
+  text-align: center;
+  margin-top: 40px;
+  font-size: 0.9rem;
+  color: #666;
+}
+
+/* ===============================
+   Responsive Design
+================================ */
+@media (max-width: 768px) {
+  body {
+    padding: 12px;
+  }
+
+  header {
+    padding: 15px;
+    text-align: center;
+  }
+
+  nav a {
+    display: inline-block;
+    margin: 6px;
+  }
+
+  form,
+  section {
+    padding: 18px;
+  }
+}

@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>🩺 Symptom Checker | NeuroPulse-MDx+</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="bg-gradient-to-br from-blue-50 to-white min-h-screen flex flex-col items-center justify-start py-16 text-gray-800 transition duration-500 dark:bg-gray-900 dark:text-gray-100">
+
+  <div class="bg-white dark:bg-gray-800 p-8 rounded-2xl shadow-lg border border-gray-200 dark:border-gray-700 w-full max-w-xl text-center">
+    
+    <h1 class="text-3xl font-bold text-indigo-600 dark:text-indigo-400 mb-4" data-i18n="title">
+      🩺 Symptom Checker
+    </h1>
+
+    <p class="text-gray-600 dark:text-gray-300 mb-6" data-i18n="subtitle">
+      Enter your symptoms for AI-powered risk analysis.
+    </p>
+
+    {% if error %}
+      <div class="mb-4 p-3 bg-red-100 text-red-700 dark:bg-red-900 dark:text-red-200 rounded font-medium text-sm">
+        ⚠️ {{ error }}
+      </div>
+    {% endif %}
+
+    <!-- Symptom Form -->
+    <form id="symptom-form" method="POST" action="/symptoms" class="space-y-4">
+
+      <textarea 
+        name="symptoms" 
+        placeholder="Describe your symptoms (e.g. headache, fever, chest pain)" 
+        required
+        autofocus
+        class="w-full p-4 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-400 dark:bg-gray-700 dark:text-white resize-none h-32"
+      >{{ request.form.get('symptoms','') }}</textarea>
+
+      <button type="submit" id="analyze-btn"
+        class="w-full bg-green-600 hover:bg-green-700 text-white py-2 rounded-lg font-semibold transition">
+        Analyze
+      </button>
+    </form>
+
+    <!-- Voice Input -->
+    <button id="speak-btn" onclick="speakSymptoms()"
+      class="mt-4 w-full bg-blue-600 hover:bg-blue-700 text-white py-2 rounded-lg font-semibold transition">
+      🎤 Speak
+    </button>
+
+    <p class="mt-6 text-sm text-gray-500 dark:text-gray-400" data-i18n="privacy">
+      Your data is private. No diagnosis or medicine is provided.
+    </p>
+
+    <!-- Dark Mode & Language -->
+    <div class="mt-6 flex flex-col items-center space-y-2">
+      <button onclick="toggleDarkMode()" class="text-sm text-gray-500 dark:text-gray-300" data-i18n="darkmode">
+        🌓 Toggle Dark Mode
+      </button>
+
+      <select id="langSelect" onchange="translatePage()"
+        class="border px-2 py-1 rounded dark:bg-gray-700 dark:text-white">
+        <option value="en">English</option>
+        <option value="hi">हिन्दी</option>
+        <option value="gu">ગુજરાતી</option>
+      </select>
+    </div>
+
+  </div>
+
+<script>
+  /* Dark Mode */
+  if(localStorage.getItem("darkMode") === "true") {
+    document.body.classList.add("dark");
+  }
+  function toggleDarkMode() {
+    document.body.classList.toggle("dark");
+    localStorage.setItem("darkMode", document.body.classList.contains("dark"));
+  }
+
+  /* Voice Input (backend must exist) */
+  async function speakSymptoms() {
+    const speakBtn = document.getElementById("speak-btn");
+    speakBtn.textContent = "🎤 Listening...";
+    speakBtn.disabled = true;
+    try {
+      const response = await fetch("/voice-symptom");
+      const data = await response.json();
+      document.querySelector("textarea").value = data.text || "";
+    } catch {
+      alert("Voice input failed.");
+    } finally {
+      speakBtn.textContent = "🎤 Speak";
+      speakBtn.disabled = false;
+    }
+  }
+
+  /* Button loading */
+  const form = document.getElementById("symptom-form");
+  const analyzeBtn = document.getElementById("analyze-btn");
+  form.addEventListener("submit", () => {
+    analyzeBtn.disabled = true;
+    analyzeBtn.textContent = "Analyzing...";
+  });
+
+  /* Translation */
+  const translations = {
+    hi: {
+      title: "🩺 लक्षण जाँच",
+      subtitle: "AI आधारित जोखिम विश्लेषण के लिए अपने लक्षण दर्ज करें।",
+      privacy: "यह ऐप केवल जागरूकता के लिए है।",
+      darkmode: "🌓 डार्क मोड बदलें"
+    },
+    gu: {
+      title: "🩺 લક્ષણ ચેકર",
+      subtitle: "AI આધારિત જોખમ વિશ્લેષણ માટે તમારા લક્ષણો દાખલ કરો.",
+      privacy: "આ એપ માત્ર જાગૃતિ માટે છે.",
+      darkmode: "🌓 ડાર્ક મોડ બદલો"
+    }
+  };
+
+  function translatePage() {
+    const lang = document.getElementById("langSelect").value;
+    const textMap = translations[lang] || {};
+    document.querySelectorAll("[data-i18n]").forEach(el => {
+      const key = el.getAttribute("data-i18n");
+      if(textMap[key]) el.textContent = textMap[key];
+    });
+  }
+</script>
+
+</body>
+</html>
